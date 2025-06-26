@@ -3,12 +3,12 @@ entries:
   ci-cd-app:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-06-25T21:50:42.60118-05:00"
+    created: "2025-06-25T22:18:17.501582-05:00"
     description: A Helm chart for Kubernetes
     digest: 7755e3e2adb8dd0ec7ff35985c0773a5e4abc3a5dba4d013bb96f5059ac49caa
     name: ci-cd-app
     type: application
     urls:
-    - https://github.com/nagarajurahul/helm-charts/ci-cd-app-0.1.0.tgz
+    - https://nagarajurahul.github.io/helm-charts/ci-cd-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-25T21:50:42.599966-05:00"
+generated: "2025-06-25T22:18:17.500735-05:00"
