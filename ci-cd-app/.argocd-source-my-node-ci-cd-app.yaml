@@ -7,5 +7,5 @@ helm:
     value: nagarajurahul/rahul-repos
     forcestring: true
   - name: image.tag
-    value: latest@sha256:9ae6c23f4f55f2710c8879bb8a002d19af0b098ec28bbf25dbef32b9918d754f
+    value: latest@sha256:9cffa78e2546d6c058b3c6221868ae528009b4c8ba769f5a4cc6dc659e3be0c5
     forcestring: true
