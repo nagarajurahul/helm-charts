@@ -1,0 +1,11 @@
+helm:
+  parameters:
+  - name: image.pullPolicy
+    value: Always
+    forcestring: false
+  - name: image.name
+    value: nagarajurahul/rahul-repos
+    forcestring: true
+  - name: image.tag
+    value: latest@sha256:9ae6c23f4f55f2710c8879bb8a002d19af0b098ec28bbf25dbef32b9918d754f
+    forcestring: true
