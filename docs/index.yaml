@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   cert-manager:
   - apiVersion: v2
-    created: "2025-07-17T21:06:37.902215-05:00"
+    created: "2025-07-17T21:55:49.185383-05:00"
     dependencies:
     - name: cert-manager
       repository: https://charts.jetstack.io
@@ -15,9 +15,9 @@ entries:
   ci-cd-app:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-17T21:06:37.903674-05:00"
+    created: "2025-07-17T21:55:49.18698-05:00"
     description: A Helm chart for Kubernetes
-    digest: 08d892280d023f240a753fd6b4629db058f43bf673ff6cffdda5271d5bc0319f
+    digest: e32f8fb975c91eb02335663d2455bbb949dd1a4497a34bf58400a1df501bc178
     name: ci-cd-app
     type: application
     urls:
@@ -25,7 +25,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-17T21:06:37.90308-05:00"
+    created: "2025-07-17T21:55:49.186283-05:00"
     description: A Helm chart for Kubernetes
     digest: 8d0d8d16ef1ecb5e73d30a3131b6188177d371b6b1f46dd57a6062297e1acbd3
     name: ci-cd-app
@@ -35,7 +35,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-17T21:06:37.902743-05:00"
+    created: "2025-07-17T21:55:49.185843-05:00"
     description: A Helm chart for Kubernetes
     digest: c345dd296fb1b5ff12b0144791cf1f4a0710640df5b4fceffebd022516456a09
     name: ci-cd-app
@@ -43,4 +43,4 @@ entries:
     urls:
     - https://nagarajurahul.github.io/helm-charts/ci-cd-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-17T21:06:37.897265-05:00"
+generated: "2025-07-17T21:55:49.179009-05:00"
