@@ -71,7 +71,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: local-selfsigned-tls
+    - secretName: ci-cd-app-tls
       hosts:
         - ci-cd-app.homeserver.com
 
