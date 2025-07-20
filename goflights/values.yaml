@@ -20,6 +20,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 # Define environment variables for the container.
+# Please create a ConfigMap or Secret in K8s with the name specified in the envFrom section.
 envFrom:
   # add more configMaps or secrets as needed using the same format
   - configMapRef:
