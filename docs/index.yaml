@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   cert-manager:
   - apiVersion: v2
-    created: "2025-07-20T09:10:47.181303-05:00"
+    created: "2025-07-20T09:11:54.717524-05:00"
     dependencies:
     - name: cert-manager
       repository: https://charts.jetstack.io
@@ -15,7 +15,7 @@ entries:
   ci-cd-app:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-20T09:10:47.182612-05:00"
+    created: "2025-07-20T09:11:54.719041-05:00"
     description: A Helm chart for Kubernetes
     digest: cfe8d1cc0c637e55e6b989bd65651eacaf95b03b27e9983988f8168dcc8c8051
     name: ci-cd-app
@@ -25,7 +25,7 @@ entries:
     version: 1.2.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-20T09:10:47.182349-05:00"
+    created: "2025-07-20T09:11:54.718737-05:00"
     description: A Helm chart for Kubernetes
     digest: e32f8fb975c91eb02335663d2455bbb949dd1a4497a34bf58400a1df501bc178
     name: ci-cd-app
@@ -35,7 +35,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-20T09:10:47.182076-05:00"
+    created: "2025-07-20T09:11:54.718408-05:00"
     description: A Helm chart for Kubernetes
     digest: 8d0d8d16ef1ecb5e73d30a3131b6188177d371b6b1f46dd57a6062297e1acbd3
     name: ci-cd-app
@@ -45,7 +45,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-20T09:10:47.181688-05:00"
+    created: "2025-07-20T09:11:54.717971-05:00"
     description: A Helm chart for Kubernetes
     digest: c345dd296fb1b5ff12b0144791cf1f4a0710640df5b4fceffebd022516456a09
     name: ci-cd-app
@@ -56,7 +56,7 @@ entries:
   goflights:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-07-20T09:10:47.182953-05:00"
+    created: "2025-07-20T09:11:54.719447-05:00"
     description: A Helm chart for Kubernetes
     digest: 47729284238a19a0311d5b21400bf4bc2eba8ef1e6cda85c31111ae37a53a5f8
     name: goflights
@@ -64,4 +64,14 @@ entries:
     urls:
     - https://nagarajurahul.github.io/helm-charts/goflights-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-20T09:10:47.175093-05:00"
+  sql:
+  - apiVersion: v2
+    appVersion: "8.0"
+    created: "2025-07-20T09:11:54.719757-05:00"
+    description: A Helm chart for SQL
+    digest: 6723da28da0642c84f1b5bd021d7a55d3b62af35b7d080a879a02b2932299aad
+    name: sql
+    urls:
+    - https://nagarajurahul.github.io/helm-charts/sql-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-07-20T09:11:54.71072-05:00"
