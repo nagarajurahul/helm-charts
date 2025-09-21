@@ -66,14 +66,14 @@ ingress:
   #   kubernetes.io/ingress.class: nginx
   #   kubernetes.io/tls-acme: "true"
   hosts:
-    - host: ci-cd-app.homeserver.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  - host: ci-cd-app.homeserver.com
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
   tls:
-    - secretName: ci-cd-app-tls
-      hosts:
-        - ci-cd-app.homeserver.com
+  - secretName: ci-cd-app-tls
+    hosts:
+    - ci-cd-app.homeserver.com
 
 certificate:
   enabled: true
@@ -83,7 +83,7 @@ certificate:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - ci-cd-app.homeserver.com
+  - ci-cd-app.homeserver.com
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -115,7 +115,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-# Additional volumes on the output Deployment definition.
+  # Additional volumes on the output Deployment definition.
 volumes: []
 # - name: foo
 #   secret:
