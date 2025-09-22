@@ -12,7 +12,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "dev-3ffb19e3843ba2c912d3b883d525047f5f7593ef"
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: []
+imagePullSecrets:
+  - name: docker-credentials
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
