@@ -19,12 +19,20 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+configMap:
+  create: true
+  name: "goflights-config"
+  annotations: {}
+  data:
+    DB_URL: "jdbc:mysql://sql.db.svc.cluster.local:3306/goflights"
+
+
 # Define environment variables for the container.
 # Please create a ConfigMap or Secret in K8s with the name specified in the envFrom section.
 envFrom:
   # add more configMaps or secrets as needed using the same format
   - configMapRef:
-      name: goflights-config
+      name: { ? { .Values.configMap.name | default (include "goflights.fullname" .) } }
   - secretRef:
       name: goflights-secret
 
