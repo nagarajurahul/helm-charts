@@ -32,8 +32,7 @@ configMap:
 envFrom:
   # add more configMaps or secrets as needed using the same format
   - configMapRef:
-      name: { ? { .Values.configMap.name | default (include "goflights.fullname" .) } }
-  - secretRef:
+      name: goflights-config
       name: goflights-secret
 
 
