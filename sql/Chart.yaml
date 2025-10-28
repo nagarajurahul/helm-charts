@@ -1,5 +1,5 @@
 apiVersion: v2
 name: sql
 description: A Helm chart for SQL
-version: 0.1.0
+version: 1.0.0
 appVersion: "8.0"
