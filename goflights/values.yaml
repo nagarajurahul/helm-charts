@@ -33,6 +33,7 @@ envFrom:
   # add more configMaps or secrets as needed using the same format
   - configMapRef:
       name: goflights-config
+  - secretRef:
       name: goflights-secret
 
 
