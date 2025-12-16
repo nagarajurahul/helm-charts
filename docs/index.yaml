@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   cert-manager:
   - apiVersion: v2
-    created: "2025-12-16T00:31:37.218766-06:00"
+    created: "2025-12-16T00:38:08.648305-06:00"
     dependencies:
     - name: cert-manager
       repository: https://charts.jetstack.io
@@ -15,7 +15,7 @@ entries:
   ci-cd-app:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-16T00:31:37.221403-06:00"
+    created: "2025-12-16T00:38:08.650146-06:00"
     description: A Helm chart for Kubernetes
     digest: cfe8d1cc0c637e55e6b989bd65651eacaf95b03b27e9983988f8168dcc8c8051
     name: ci-cd-app
@@ -25,7 +25,7 @@ entries:
     version: 1.2.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-16T00:31:37.220996-06:00"
+    created: "2025-12-16T00:38:08.649836-06:00"
     description: A Helm chart for Kubernetes
     digest: e32f8fb975c91eb02335663d2455bbb949dd1a4497a34bf58400a1df501bc178
     name: ci-cd-app
@@ -35,7 +35,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-16T00:31:37.219995-06:00"
+    created: "2025-12-16T00:38:08.649279-06:00"
     description: A Helm chart for Kubernetes
     digest: 8d0d8d16ef1ecb5e73d30a3131b6188177d371b6b1f46dd57a6062297e1acbd3
     name: ci-cd-app
@@ -45,7 +45,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-16T00:31:37.219365-06:00"
+    created: "2025-12-16T00:38:08.648779-06:00"
     description: A Helm chart for Kubernetes
     digest: c345dd296fb1b5ff12b0144791cf1f4a0710640df5b4fceffebd022516456a09
     name: ci-cd-app
@@ -56,7 +56,7 @@ entries:
   goflights:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-16T00:31:37.223758-06:00"
+    created: "2025-12-16T00:38:08.652032-06:00"
     description: A Helm chart for Kubernetes
     digest: 5a0a02578286df364d3c276e17df08e21209888b5e6e7dd414616b9ecb51182c
     name: goflights
@@ -66,7 +66,7 @@ entries:
     version: 1.3.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-16T00:31:37.223148-06:00"
+    created: "2025-12-16T00:38:08.651578-06:00"
     description: A Helm chart for Kubernetes
     digest: 7e1f46065a6b5978fa0ef808f578656470b5fc8e6aa6304a835b725b66d0dd0e
     name: goflights
@@ -76,7 +76,7 @@ entries:
     version: 1.3.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-16T00:31:37.222585-06:00"
+    created: "2025-12-16T00:38:08.651096-06:00"
     description: A Helm chart for Kubernetes
     digest: ddf7873da71f78fc544e5447d8b782414c57db439daa21c1fe64c45627905555
     name: goflights
@@ -86,7 +86,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-16T00:31:37.222076-06:00"
+    created: "2025-12-16T00:38:08.650741-06:00"
     description: A Helm chart for Kubernetes
     digest: b553cc0a2ff774dc2d3ca002cd1c906d53007f9d03802eaa5c587cf9ea7b4b09
     name: goflights
@@ -96,7 +96,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-16T00:31:37.221706-06:00"
+    created: "2025-12-16T00:38:08.650436-06:00"
     description: A Helm chart for Kubernetes
     digest: 7eb107374f5a6d9b8b06dbe0428391239b718d71b61e8bdd4af668dd2233890d
     name: goflights
@@ -104,10 +104,25 @@ entries:
     urls:
     - https://nagarajurahul.github.io/helm-charts/goflights-0.1.0.tgz
     version: 0.1.0
+  monitoring:
+  - apiVersion: v2
+    appVersion: 80.4.1
+    created: "2025-12-16T00:38:08.670227-06:00"
+    dependencies:
+    - name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 80.4.1
+    description: Umbrella chart for kube-prometheus-stack
+    digest: 5a935921735f1e15623a8948c9b42b8b8ffb1c8465bf3534ac7a9003fb3359e3
+    name: monitoring
+    type: application
+    urls:
+    - https://nagarajurahul.github.io/helm-charts/monitoring-1.0.0.tgz
+    version: 1.0.0
   prometheus:
   - apiVersion: v2
     appVersion: 80.4.1
-    created: "2025-12-16T00:31:37.241336-06:00"
+    created: "2025-12-16T00:38:08.688081-06:00"
     dependencies:
     - name: kube-prometheus-stack
       repository: https://prometheus-community.github.io/helm-charts
@@ -122,7 +137,7 @@ entries:
   sql:
   - apiVersion: v2
     appVersion: "8.0"
-    created: "2025-12-16T00:31:37.242279-06:00"
+    created: "2025-12-16T00:38:08.688916-06:00"
     description: A Helm chart for SQL
     digest: 477104180bdb82e15bbe8e288cabea9ded81acf1e5086bed6e69b3d6f67874bf
     name: sql
@@ -131,11 +146,11 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: "8.0"
-    created: "2025-12-16T00:31:37.241798-06:00"
+    created: "2025-12-16T00:38:08.688509-06:00"
     description: A Helm chart for SQL
     digest: ee1602ab3b81faf6e7ad56cda336a4e77b46a171211183bb0555106682ea90d1
     name: sql
     urls:
     - https://nagarajurahul.github.io/helm-charts/sql-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-16T00:31:37.213473-06:00"
+generated: "2025-12-16T00:38:08.6441-06:00"
