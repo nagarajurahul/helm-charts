@@ -18,17 +18,19 @@ prometheus:
     # For HA, use >1
     replicas: 1
     # Balance: Cost vs. query performance
-    retention: 30d
-    retentionSize: "50GB"
+    # retention: 30d
+    # retentionSize: "50GB"
+    retention: 3d
+    retentionSize: "2GB"
 
     # 1-2 GB RAM per 1M active time series
-    resources:
-      requests:
-        cpu: 500m
-        memory: 2Gi
-      limits:
-        cpu: 1000m
-        memory: 4Gi
+    # resources:
+    #   requests:
+    #     cpu: 500m
+    #     memory: 2Gi
+    #   limits:
+    #     cpu: 1000m
+    #     memory: 4Gi
 
     # Persistent storage - Must do in production
     storageSpec:
@@ -38,7 +40,8 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 50Gi
+              # storage: 50Gi
+              storage: 2Gi
           # Calculation - 1-2 KB per sample, depends on retention
 
           # Scrape interval - Keep it within 30s to 2m to reduce costs
@@ -93,15 +96,16 @@ grafana:
   persistence:
     enabled: true # Store dashboards/datasources on disk, or else destroyed on restart
     storageClassName: local-path # Change depending on your storage class
-    size: 10Gi
+    # size: 10Gi
+    size: 1Gi
 
-  resources:
-    limits:
-      cpu: 300m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 256Mi
+  # resources:
+  #   limits:
+  #     cpu: 300m
+  #     memory: 512Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 256Mi
 
   service:
     type: ClusterIP
@@ -163,13 +167,13 @@ alertmanager:
   alertmanagerSpec:
     replicas: 1
 
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 200m
-        memory: 256Mi
+    # resources:
+    #   requests:
+    #     cpu: 100m
+    #     memory: 128Mi
+    #   limits:
+    #     cpu: 200m
+    #     memory: 256Mi
 
     # Persistent storage - Must do in production
     storage:
@@ -179,8 +183,8 @@ alertmanager:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 5Gi
-
+              # storage: 5Gi
+              storage: 1Gi
   config:
     global:
       resolve_timeout: 5m # How long to wait before marking alert as resolved
@@ -249,13 +253,13 @@ alertmanager:
     # Node Exporter
 nodeExporter:
   enabled: true
-  resources:
-    limits:
-      cpu: 200m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 64Mi
+  # resources:
+  #   limits:
+  #     cpu: 200m
+  #     memory: 128Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 64Mi
 
 # Kube State Metrics
 kubeStateMetrics:
