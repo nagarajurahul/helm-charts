@@ -1,5 +1,4 @@
 # Custom values for kube-prometheus-stack
-# Save this as prometheus-values.yaml
 
 # Prometheus Operator
 prometheusOperator:
@@ -22,7 +21,7 @@ prometheus:
     retention: 30d
     retentionSize: "50GB"
 
-    # 1-2 GB RAM per 1M active time serie
+    # 1-2 GB RAM per 1M active time series
     resources:
       requests:
         cpu: 500m
@@ -31,8 +30,7 @@ prometheus:
         cpu: 1000m
         memory: 4Gi
 
-    # Persistent storage
-    # Must do in production
+    # Persistent storage - Must do in production
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -41,14 +39,13 @@ prometheus:
           resources:
             requests:
               storage: 50Gi
-            # Calculation - 1-2 KB per sample, depends on retention
+          # Calculation - 1-2 KB per sample, depends on retention
 
-            # Scrape interval
-            # Keep it within 30s to 2m, to reduce costs
+          # Scrape interval - Keep it within 30s to 2m to reduce costs
     scrapeInterval: "30s"
     evaluationInterval: "30s"
 
-    # Service monitors
+    # Service monitors - false means discover ALL ServiceMonitors
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
@@ -70,25 +67,32 @@ prometheus:
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
     - prometheus.homelab.local # Change this in your production cluster
+    # TLS disabled for HTTP-only setup
     # tls:
-    # - secretName: prometheus-tls
-    #   hosts:
-    #   - prometheus.homelab.local # Change this in your production cluster
+    #   - secretName: prometheus-tls
+    #     hosts:
+    #       - prometheus.homelab.local
 
-# Grafana
+    # Grafana
 grafana:
   enabled: true
+
+  # Use existing secret for admin credentials
+  # Check this in production, deploy using Vault
+  # Create this secret BEFORE deploying:
+  # kubectl create secret generic grafana-admin-secret \
+  #   --from-literal=admin-user=admin \
+  #   --from-literal=admin-password=your-secure-password \
+  #   -n monitoring
   admin:
     existingSecret: grafana-admin-secret
     userKey: admin-user
     passwordKey: admin-password
-    # Check this, Dont forget this, create secrets via Secrets Manager
 
-    # Persistent storage
-    # Must do in production
+  # Persistent storage - Must do in production
   persistence:
     enabled: true # Store dashboards/datasources on disk, or else destroyed on restart
-    storageClassName: standard # Change depending on your storage clas
+    storageClassName: standard # Change depending on your storage class
     size: 10Gi
 
   resources:
@@ -112,15 +116,15 @@ grafana:
       # traefik.ingress.kubernetes.io/router.tls: "true"
       # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-
     hosts:
     - grafana.homelab.local # Change this in your production cluster
+    # TLS disabled for HTTP-only setup
     # tls:
-    # - secretName: grafana-tls
-    #   hosts:
-    #   - grafana.homelab.local # Change this in your production cluster
+    #   - secretName: grafana-tls
+    #     hosts:
+    #       - grafana.homelab.local
 
-  # Datasources
+    # Datasources
   additionalDataSources:
   - name: Loki
     type: loki
@@ -169,8 +173,7 @@ alertmanager:
         cpu: 200m
         memory: 256Mi
 
-    # Persistent storage
-    # Must do in productio
+    # Persistent storage - Must do in production
     storage:
       volumeClaimTemplate:
         spec:
@@ -237,15 +240,15 @@ alertmanager:
       # traefik.ingress.kubernetes.io/router.tls: "true"
       # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-
     hosts:
     - alertmanager.homelab.local # Change this in your production cluster
+    # TLS disabled for HTTP-only setup
     # tls:
-    # - secretName: alertmanager-tls
-    #   hosts:
-    #   - alertmanager.homelab.local # Change this in your production cluster
+    #   - secretName: alertmanager-tls
+    #     hosts:
+    #       - alertmanager.homelab.local
 
-# Node Exporter
+    # Node Exporter
 nodeExporter:
   enabled: true
   resources:
