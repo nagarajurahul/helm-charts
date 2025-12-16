@@ -34,7 +34,7 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: standard # Change depending on your storage class
+          storageClassName: local-path # Change depending on your storage class
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
@@ -92,7 +92,7 @@ grafana:
   # Persistent storage - Must do in production
   persistence:
     enabled: true # Store dashboards/datasources on disk, or else destroyed on restart
-    storageClassName: standard # Change depending on your storage class
+    storageClassName: local-path # Change depending on your storage class
     size: 10Gi
 
   resources:
@@ -175,7 +175,7 @@ alertmanager:
     storage:
       volumeClaimTemplate:
         spec:
-          storageClassName: standard # Change depending on your storage class
+          storageClassName: local-path # Change depending on your storage class
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
