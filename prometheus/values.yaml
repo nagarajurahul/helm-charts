@@ -51,6 +51,7 @@ prometheus:
     # Service monitors
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
 
   service:
     type: ClusterIP
