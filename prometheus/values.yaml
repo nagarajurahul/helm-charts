@@ -35,7 +35,7 @@ prometheus:
       volumeClaimTemplate:
         spec:
           storageClassName: standard # Change depending on your storage class
-          accessModes: [ "ReadWriteOnce" ]
+          accessModes: ["ReadWriteOnce"]
           resources:
             requests:
               storage: 50Gi
@@ -66,7 +66,7 @@ prometheus:
       # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
-    - prometheus.homelab.local # Change this in your production cluster
+      - prometheus.homelab.local # Change this in your production cluster
     # TLS disabled for HTTP-only setup
     # tls:
     #   - secretName: prometheus-tls
@@ -117,7 +117,7 @@ grafana:
       # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
-    - grafana.homelab.local # Change this in your production cluster
+      - grafana.homelab.local # Change this in your production cluster
     # TLS disabled for HTTP-only setup
     # tls:
     #   - secretName: grafana-tls
@@ -126,30 +126,28 @@ grafana:
 
     # Datasources
   additionalDataSources:
-  - name: Loki
-    type: loki
-    url: http://loki.monitoring.svc.cluster.local:3100
-    access: proxy
-    isDefault: false
-
+    - name: Loki
+      type: loki
+      url: http://loki.monitoring.svc.cluster.local:3100
+      access: proxy
+      isDefault: false
   # Plugins
   plugins:
-  - grafana-piechart-panel
-  - grafana-clock-panel
-
+    - grafana-piechart-panel
+    - grafana-clock-panel
   # Dashboard providers
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-      - name: 'default'
-        orgId: 1
-        folder: ''
-        type: file
-        disableDeletion: false
-        editable: true
-        options:
-          path: /var/lib/grafana/dashboards/default
+        - name: "default"
+          orgId: 1
+          folder: ""
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
 
   # SMTP settings (optional)
   smtp:
@@ -178,7 +176,7 @@ alertmanager:
       volumeClaimTemplate:
         spec:
           storageClassName: standard # Change depending on your storage class
-          accessModes: [ "ReadWriteOnce" ]
+          accessModes: ["ReadWriteOnce"]
           resources:
             requests:
               storage: 5Gi
@@ -190,46 +188,46 @@ alertmanager:
       # slack_api_url: 'YOUR_SLACK_WEBHOOK_URL'
 
     route:
-      group_by: [ 'alertname', 'cluster', 'service' ]
+      group_by: ["alertname", "cluster", "service"]
       group_wait: 10s
       group_interval: 10s
       repeat_interval: 12h
-      receiver: 'default'
+      receiver: "default"
       routes:
-      - match:
-          alertname: Watchdog
-        receiver: 'null'
-      - match:
-          severity: critical
-        receiver: 'critical'
-        continue: true
-      - match:
-          severity: warning
-        receiver: 'warning'
+        - match:
+            alertname: Watchdog
+          receiver: "null"
+        - match:
+            severity: critical
+          receiver: "critical"
+          continue: true
+        - match:
+            severity: warning
+          receiver: "warning"
 
     receivers:
-    - name: 'null'
+      - name: "null"
 
-    - name: 'default'
-      # Add your default receiver config
+      - name: "default"
+        # Add your default receiver config
 
-    - name: 'critical'
-      # Slack example
-      # slack_configs:
-      #   - channel: '#alerts-critical'
-      #     title: 'Critical Alert: {{ .GroupLabels.alertname }}'
-      #     text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+      - name: "critical"
+        # Slack example
+        # slack_configs:
+        #   - channel: '#alerts-critical'
+        #     title: 'Critical Alert: {{ .GroupLabels.alertname }}'
+        #     text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
 
-      # Email example
-      # email_configs:
-      #   - to: 'oncall@example.com'
-      #     subject: 'Critical Alert: {{ .GroupLabels.alertname }}'
+        # Email example
+        # email_configs:
+        #   - to: 'oncall@example.com'
+        #     subject: 'Critical Alert: {{ .GroupLabels.alertname }}'
 
-    - name: 'warning'
-      # Slack example
-      # slack_configs:
-      #   - channel: '#alerts-warning'
-      #     title: 'Warning: {{ .GroupLabels.alertname }}'
+      - name: "warning"
+        # Slack example
+        # slack_configs:
+        #   - channel: '#alerts-warning'
+        #     title: 'Warning: {{ .GroupLabels.alertname }}'
 
   ingress:
     enabled: true
@@ -241,7 +239,7 @@ alertmanager:
       # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
-    - alertmanager.homelab.local # Change this in your production cluster
+      - alertmanager.homelab.local # Change this in your production cluster
     # TLS disabled for HTTP-only setup
     # tls:
     #   - secretName: alertmanager-tls
