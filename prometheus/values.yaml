@@ -62,16 +62,17 @@ prometheus:
     # Always check this in production, enable only if you need external access
     ingressClassName: traefik
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-      cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
     - prometheus.homelab.local # Change this in your production cluster
-    tls:
-    - secretName: prometheus-tls
-      hosts:
-      - prometheus.homelab.local # Change this in your production cluste
+    # tls:
+    # - secretName: prometheus-tls
+    #   hosts:
+    #   - prometheus.homelab.local # Change this in your production cluster
 
 # Grafana
 grafana:
@@ -105,17 +106,18 @@ grafana:
     enabled: true
     ingressClassName: traefik
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-      cert-manager.io/cluster-issuer: letsencrypt-prod
 
     hosts:
     - grafana.homelab.local # Change this in your production cluster
-    tls:
-    - secretName: grafana-tls
-      hosts:
-      - grafana.homelab.local # Change this in your production cluster
+    # tls:
+    # - secretName: grafana-tls
+    #   hosts:
+    #   - grafana.homelab.local # Change this in your production cluster
 
   # Datasources
   additionalDataSources:
@@ -229,16 +231,18 @@ alertmanager:
     enabled: true
     ingressClassName: traefik
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+
     hosts:
     - alertmanager.homelab.local # Change this in your production cluster
-    tls:
-    - secretName: alertmanager-tls
-      hosts:
-      - alertmanager.homelab.local # Change this in your production cluster
+    # tls:
+    # - secretName: alertmanager-tls
+    #   hosts:
+    #   - alertmanager.homelab.local # Change this in your production cluster
 
 # Node Exporter
 nodeExporter:
