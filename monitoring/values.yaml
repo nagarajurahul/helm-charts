@@ -45,7 +45,7 @@ prometheus:
               storage: 2Gi
           # Calculation - 1-2 KB per sample, depends on retention
 
-          # Scrape interval - Keep it within 30s to 2m to reduce costs
+    # Scrape interval - Keep it within 30s to 2m to reduce costs
     scrapeInterval: "30s"
     evaluationInterval: "30s"
 
