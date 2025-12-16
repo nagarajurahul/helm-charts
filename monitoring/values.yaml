@@ -1,318 +1,323 @@
 # Custom values for kube-prometheus-stack
 # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
 
-# Prometheus Operator
-prometheusOperator:
-  enabled: true
-  resources:
-    limits:
-      cpu: 200m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 256Mi
+# Fix: When using umbrella chart in helm, and creating a dependency, we need to have all values namespaced under dependency name here
+# Check below for additional info
+# https://helm.sh/docs/topics/charts/
+kube-prometheus-stack:
 
-# Prometheus Server
-prometheus:
-  enabled: true
-  prometheusSpec:
-    # For HA, use >1
-    replicas: 1
-    # Balance: Cost vs. query performance
-    # retention: 30d
-    # retentionSize: "50GB"
-    retention: 3d
-    retentionSize: "2GB"
+  # Prometheus Operator
+  prometheusOperator:
+    enabled: true
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
 
-    # 1-2 GB RAM per 1M active time series
-    # resources:
-    #   requests:
-    #     cpu: 500m
-    #     memory: 2Gi
-    #   limits:
-    #     cpu: 1000m
-    #     memory: 4Gi
+  # Prometheus Server
+  prometheus:
+    enabled: true
+    prometheusSpec:
+      # For HA, use >1
+      replicas: 1
+      # Balance: Cost vs. query performance
+      # retention: 30d
+      # retentionSize: "50GB"
+      retention: 3d
+      retentionSize: "2GB"
+
+      # 1-2 GB RAM per 1M active time series
+      # resources:
+      #   requests:
+      #     cpu: 500m
+      #     memory: 2Gi
+      #   limits:
+      #     cpu: 1000m
+      #     memory: 4Gi
+
+      # Persistent storage - Must do in production
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path # Change depending on your storage class
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                # storage: 50Gi
+                storage: 2Gi
+            # Calculation - 1-2 KB per sample, depends on retention
+
+      # Scrape interval - Keep it within 30s to 2m to reduce costs
+      scrapeInterval: "30s"
+      evaluationInterval: "30s"
+
+      # Service monitors - false means discover ALL ServiceMonitors
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      ruleSelectorNilUsesHelmValues: false
+
+    service:
+      type: ClusterIP
+      port: 9090
+
+    ingress:
+      enabled: true
+      # Never do in this production
+      # Always check this in production, enable only if you need external access
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        # traefik.ingress.kubernetes.io/router.tls: "true"
+        # cert-manager.io/cluster-issuer: letsencrypt-prod
+        traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
+      hosts:
+        - prometheus.homelab.local # Change this in your production cluster
+      # TLS disabled for HTTP-only setup
+      # tls:
+      #   - secretName: prometheus-tls
+      #     hosts:
+      #       - prometheus.homelab.local
+
+      # Grafana
+  grafana:
+    enabled: true
+
+    # Use existing secret for admin credentials
+    # Check this in production, deploy using Vault
+    # Create this secret BEFORE deploying:
+    # kubectl create secret generic grafana-admin-secret \
+    #   --from-literal=admin-user=admin \
+    #   --from-literal=admin-password=your-secure-password \
+    #   -n monitoring
+    admin:
+      existingSecret: grafana-admin-secret
+      userKey: admin-user
+      passwordKey: admin-password
 
     # Persistent storage - Must do in production
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: local-path # Change depending on your storage class
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              # storage: 50Gi
-              storage: 2Gi
-          # Calculation - 1-2 KB per sample, depends on retention
-
-    # Scrape interval - Keep it within 30s to 2m to reduce costs
-    scrapeInterval: "30s"
-    evaluationInterval: "30s"
-
-    # Service monitors - false means discover ALL ServiceMonitors
-    serviceMonitorSelectorNilUsesHelmValues: false
-    podMonitorSelectorNilUsesHelmValues: false
-    ruleSelectorNilUsesHelmValues: false
-
-  service:
-    type: ClusterIP
-    port: 9090
-
-  ingress:
-    enabled: true
-    # Never do in this production
-    # Always check this in production, enable only if you need external access
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-      # cert-manager.io/cluster-issuer: letsencrypt-prod
-      traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-    hosts:
-      - prometheus.homelab.local # Change this in your production cluster
-    # TLS disabled for HTTP-only setup
-    # tls:
-    #   - secretName: prometheus-tls
-    #     hosts:
-    #       - prometheus.homelab.local
-
-    # Grafana
-grafana:
-  enabled: true
-
-  # Use existing secret for admin credentials
-  # Check this in production, deploy using Vault
-  # Create this secret BEFORE deploying:
-  # kubectl create secret generic grafana-admin-secret \
-  #   --from-literal=admin-user=admin \
-  #   --from-literal=admin-password=your-secure-password \
-  #   -n monitoring
-  admin:
-    existingSecret: grafana-admin-secret
-    userKey: admin-user
-    passwordKey: admin-password
-
-  # Persistent storage - Must do in production
-  persistence:
-    enabled: true # Store dashboards/datasources on disk, or else destroyed on restart
-    storageClassName: local-path # Change depending on your storage class
-    # size: 10Gi
-    size: 1Gi
-
-  # resources:
-  #   limits:
-  #     cpu: 300m
-  #     memory: 512Mi
-  #   requests:
-  #     cpu: 100m
-  #     memory: 256Mi
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-      # cert-manager.io/cluster-issuer: letsencrypt-prod
-      traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-    hosts:
-      - grafana.homelab.local # Change this in your production cluster
-    # TLS disabled for HTTP-only setup
-    # tls:
-    #   - secretName: grafana-tls
-    #     hosts:
-    #       - grafana.homelab.local
-
-    # Datasources
-  additionalDataSources:
-    - name: Loki
-      type: loki
-      url: http://loki.monitoring.svc.cluster.local:3100
-      access: proxy
-      isDefault: false
-  # Plugins
-  plugins:
-    - grafana-piechart-panel
-    - grafana-clock-panel
-  # Dashboard providers
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-        - name: "default"
-          orgId: 1
-          folder: ""
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
-
-  # SMTP settings (optional)
-  smtp:
-    enabled: false
-    # host: smtp.gmail.com:587
-    # user: your-email@gmail.com
-    # password: your-app-password
-    # from_address: your-email@gmail.com
-
-    # Alertmanager
-alertmanager:
-  enabled: true
-  alertmanagerSpec:
-    replicas: 1
+    persistence:
+      enabled: true # Store dashboards/datasources on disk, or else destroyed on restart
+      storageClassName: local-path # Change depending on your storage class
+      # size: 10Gi
+      size: 1Gi
 
     # resources:
+    #   limits:
+    #     cpu: 300m
+    #     memory: 512Mi
     #   requests:
     #     cpu: 100m
-    #     memory: 128Mi
-    #   limits:
-    #     cpu: 200m
     #     memory: 256Mi
 
-    # Persistent storage - Must do in production
-    storage:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: local-path # Change depending on your storage class
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              # storage: 5Gi
-              storage: 1Gi
-  config:
-    global:
-      resolve_timeout: 5m # How long to wait before marking alert as resolved
-      # Slack API URL (optional)
-      # slack_api_url: 'YOUR_SLACK_WEBHOOK_URL'
+    service:
+      type: ClusterIP
+      port: 80
 
-    route:
-      group_by: ["alertname", "cluster", "service"]
-      group_wait: 10s
-      group_interval: 10s
-      repeat_interval: 12h
-      receiver: "default"
-      routes:
-        - match:
-            alertname: Watchdog
-          receiver: "null"
-        - match:
-            severity: critical
-          receiver: "critical"
-          continue: true
-        - match:
-            severity: warning
-          receiver: "warning"
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        # traefik.ingress.kubernetes.io/router.tls: "true"
+        # cert-manager.io/cluster-issuer: letsencrypt-prod
+        traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
+      hosts:
+        - grafana.homelab.local # Change this in your production cluster
+      # TLS disabled for HTTP-only setup
+      # tls:
+      #   - secretName: grafana-tls
+      #     hosts:
+      #       - grafana.homelab.local
 
-    receivers:
-      - name: "null"
+      # Datasources
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        url: http://loki.monitoring.svc.cluster.local:3100
+        access: proxy
+        isDefault: false
+    # Plugins
+    plugins:
+      - grafana-piechart-panel
+      - grafana-clock-panel
+    # Dashboard providers
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: "default"
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
 
-      - name: "default"
-        # Add your default receiver config
+    # SMTP settings (optional)
+    smtp:
+      enabled: false
+      # host: smtp.gmail.com:587
+      # user: your-email@gmail.com
+      # password: your-app-password
+      # from_address: your-email@gmail.com
 
-      - name: "critical"
-        # Slack example
-        # slack_configs:
-        #   - channel: '#alerts-critical'
-        #     title: 'Critical Alert: {{ .GroupLabels.alertname }}'
-        #     text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
-
-        # Email example
-        # email_configs:
-        #   - to: 'oncall@example.com'
-        #     subject: 'Critical Alert: {{ .GroupLabels.alertname }}'
-
-      - name: "warning"
-        # Slack example
-        # slack_configs:
-        #   - channel: '#alerts-warning'
-        #     title: 'Warning: {{ .GroupLabels.alertname }}'
-
-  ingress:
+      # Alertmanager
+  alertmanager:
     enabled: true
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-      # cert-manager.io/cluster-issuer: letsencrypt-prod
-      traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-    hosts:
-      - alertmanager.homelab.local # Change this in your production cluster
-    # TLS disabled for HTTP-only setup
-    # tls:
-    #   - secretName: alertmanager-tls
-    #     hosts:
-    #       - alertmanager.homelab.local
+    alertmanagerSpec:
+      replicas: 1
 
-    # Node Exporter
-nodeExporter:
-  enabled: true
-  # resources:
-  #   limits:
-  #     cpu: 200m
-  #     memory: 128Mi
-  #   requests:
-  #     cpu: 100m
-  #     memory: 64Mi
+      # resources:
+      #   requests:
+      #     cpu: 100m
+      #     memory: 128Mi
+      #   limits:
+      #     cpu: 200m
+      #     memory: 256Mi
 
-# Kube State Metrics
-kubeStateMetrics:
-  enabled: true
+      # Persistent storage - Must do in production
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path # Change depending on your storage class
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                # storage: 5Gi
+                storage: 1Gi
+    config:
+      global:
+        resolve_timeout: 5m # How long to wait before marking alert as resolved
+        # Slack API URL (optional)
+        # slack_api_url: 'YOUR_SLACK_WEBHOOK_URL'
 
-# Additional monitoring targets
-kubeApiServer:
-  enabled: true
+      route:
+        group_by: ["alertname", "cluster", "service"]
+        group_wait: 10s
+        group_interval: 10s
+        repeat_interval: 12h
+        receiver: "default"
+        routes:
+          - match:
+              alertname: Watchdog
+            receiver: "null"
+          - match:
+              severity: critical
+            receiver: "critical"
+            continue: true
+          - match:
+              severity: warning
+            receiver: "warning"
 
-kubelet:
-  enabled: true
+      receivers:
+        - name: "null"
 
-kubeControllerManager:
-  enabled: true
+        - name: "default"
+          # Add your default receiver config
 
-coreDns:
-  enabled: true
+        - name: "critical"
+          # Slack example
+          # slack_configs:
+          #   - channel: '#alerts-critical'
+          #     title: 'Critical Alert: {{ .GroupLabels.alertname }}'
+          #     text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
 
-kubeEtcd:
-  enabled: true
+          # Email example
+          # email_configs:
+          #   - to: 'oncall@example.com'
+          #     subject: 'Critical Alert: {{ .GroupLabels.alertname }}'
 
-kubeScheduler:
-  enabled: true
+        - name: "warning"
+          # Slack example
+          # slack_configs:
+          #   - channel: '#alerts-warning'
+          #     title: 'Warning: {{ .GroupLabels.alertname }}'
 
-kubeProxy:
-  enabled: true
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        # traefik.ingress.kubernetes.io/router.tls: "true"
+        # cert-manager.io/cluster-issuer: letsencrypt-prod
+        traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
+      hosts:
+        - alertmanager.homelab.local # Change this in your production cluster
+      # TLS disabled for HTTP-only setup
+      # tls:
+      #   - secretName: alertmanager-tls
+      #     hosts:
+      #       - alertmanager.homelab.local
 
-# Default rules
-defaultRules:
-  create: true
-  rules:
-    alertmanager: true
-    etcd: true
-    configReloaders: true
-    general: true
-    k8s: true
-    kubeApiserver: true
-    kubeApiserverAvailability: true
-    kubeApiserverSlos: true
-    kubelet: true
-    kubeProxy: true
-    kubePrometheusGeneral: true
-    kubePrometheusNodeRecording: true
-    kubernetesApps: true
-    kubernetesResources: true
-    kubernetesStorage: true
-    kubernetesSystem: true
-    kubeScheduler: true
-    kubeStateMetrics: true
-    network: true
-    node: true
-    nodeExporterAlerting: true
-    nodeExporterRecording: true
-    prometheus: true
-    prometheusOperator: true
+      # Node Exporter
+  nodeExporter:
+    enabled: true
+    # resources:
+    #   limits:
+    #     cpu: 200m
+    #     memory: 128Mi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 64Mi
+
+  # Kube State Metrics
+  kubeStateMetrics:
+    enabled: true
+
+  # Additional monitoring targets
+  kubeApiServer:
+    enabled: true
+
+  kubelet:
+    enabled: true
+
+  kubeControllerManager:
+    enabled: true
+
+  coreDns:
+    enabled: true
+
+  kubeEtcd:
+    enabled: true
+
+  kubeScheduler:
+    enabled: true
+
+  kubeProxy:
+    enabled: true
+
+  # Default rules
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: true
+      etcd: true
+      configReloaders: true
+      general: true
+      k8s: true
+      kubeApiserver: true
+      kubeApiserverAvailability: true
+      kubeApiserverSlos: true
+      kubelet: true
+      kubeProxy: true
+      kubePrometheusGeneral: true
+      kubePrometheusNodeRecording: true
+      kubernetesApps: true
+      kubernetesResources: true
+      kubernetesStorage: true
+      kubernetesSystem: true
+      kubeScheduler: true
+      kubeStateMetrics: true
+      network: true
+      node: true
+      nodeExporterAlerting: true
+      nodeExporterRecording: true
+      prometheus: true
+      prometheusOperator: true
