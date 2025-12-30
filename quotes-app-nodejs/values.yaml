@@ -22,6 +22,24 @@ fullnameOverride: ""
 container:
   port: 3000
 
+configMap:
+  create: true
+  name: "quotes-app-nodejs-config"
+  annotations: {}
+  data:
+    NODE_ENV: "development"
+    DB_HOST: "postgres.quotes-app-nodejs.svc.cluster.local"
+
+
+# Define environment variables for the container.
+# Please create a ConfigMap or Secret in K8s with the name specified in the envFrom section.
+envFrom:
+  # add more configMaps or secrets as needed using the same format
+  - configMapRef:
+      name: quotes-app-nodejs-config
+  - secretRef:
+      name: quotes-app-nodejs-secrets
+
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
