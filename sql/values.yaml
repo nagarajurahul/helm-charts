@@ -33,7 +33,7 @@ envFrom:
   - configMapRef:
       name: sql-config
   - secretRef:
-      name: sql-secret
+      name: sql-secrets
 
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
