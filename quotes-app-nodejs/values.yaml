@@ -29,6 +29,7 @@ configMap:
   data:
     NODE_ENV: "development"
     DB_HOST: "postgres.quotes-app-nodejs.svc.cluster.local"
+    DB_PORT: 5432
 
 
 # Define environment variables for the container.
