@@ -39,5 +39,5 @@ spec:
         - type: Pods
           value: {{ .Values.autoscaling.scaleDown.policyPods | default 1 }}
           periodSeconds: {{ .Values.autoscaling.scaleDown.periodSeconds | default 60 }}
-      selectPolicy: { ? { .Values.autoscaling.scaleDown.selectPolicy } }
+      selectPolicy: {{ .Values.autoscaling.scaleDown.selectPolicy }}
 {{- end }}
