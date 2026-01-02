@@ -126,6 +126,10 @@ autoscaling:
   targetMemoryUtilizationPercentage: 80
   scaleDown:
     stabilizationWindowSeconds: 60
+    policyPercent: 50
+    policyPods: 4
+    periodSeconds: 60
+    selectPolicy: Min
 
 # Additional volumes on the output Deployment definition.
 volumes: []
