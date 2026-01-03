@@ -1,124 +1,125 @@
-# ------------------------------------------------------------------------------
-# Gatekeeper replica count
-# At least 2 replicas are required to avoid admission outages.
-# Use 3+ for large or multi-AZ clusters.
-# ------------------------------------------------------------------------------
-replicas: 2
+gatekeeper:
+  # ------------------------------------------------------------------------------
+  # Gatekeeper replica count
+  # At least 2 replicas are required to avoid admission outages.
+  # Use 3+ for large or multi-AZ clusters.
+  # ------------------------------------------------------------------------------
+  replicas: 2
 
-# ------------------------------------------------------------------------------
-# Audit configuration
-# Audit runs periodically to detect policy violations in existing resources.
-# A 5-minute interval balances freshness with API server load.
-# ------------------------------------------------------------------------------
-auditInterval: 300
+  # ------------------------------------------------------------------------------
+  # Audit configuration
+  # Audit runs periodically to detect policy violations in existing resources.
+  # A 5-minute interval balances freshness with API server load.
+  # ------------------------------------------------------------------------------
+  auditInterval: 300
 
-# ------------------------------------------------------------------------------
-# Use cached inventory for audits instead of hitting the API server repeatedly.
-# This significantly reduces API pressure in production clusters.
-# ------------------------------------------------------------------------------
-auditFromCache: true
+  # ------------------------------------------------------------------------------
+  # Use cached inventory for audits instead of hitting the API server repeatedly.
+  # This significantly reduces API pressure in production clusters.
+  # ------------------------------------------------------------------------------
+  auditFromCache: true
 
-# ------------------------------------------------------------------------------
-# Chunk size for listing cluster resources during audit.
-# Prevents memory spikes when clusters contain many objects.
-# ------------------------------------------------------------------------------
-auditChunkSize: 500
+  # ------------------------------------------------------------------------------
+  # Chunk size for listing cluster resources during audit.
+  # Prevents memory spikes when clusters contain many objects.
+  # ------------------------------------------------------------------------------
+  auditChunkSize: 500
 
-# ------------------------------------------------------------------------------
-# Limit the number of violations reported per constraint to avoid log spam.
-# ------------------------------------------------------------------------------
-constraintViolationsLimit: 20
+  # ------------------------------------------------------------------------------
+  # Limit the number of violations reported per constraint to avoid log spam.
+  # ------------------------------------------------------------------------------
+  constraintViolationsLimit: 20
 
-# ------------------------------------------------------------------------------
-# Emit Kubernetes events for admission and audit violations.
-# Useful for debugging, incident response, and compliance visibility.
-# ------------------------------------------------------------------------------
-emitAdmissionEvents: true
-emitAuditEvents: true
+  # ------------------------------------------------------------------------------
+  # Emit Kubernetes events for admission and audit violations.
+  # Useful for debugging, incident response, and compliance visibility.
+  # ------------------------------------------------------------------------------
+  emitAdmissionEvents: true
+  emitAuditEvents: true
 
-# ------------------------------------------------------------------------------
-# Webhook failure policy
-# "Fail" ensures policy enforcement is fail-closed.
-# If Gatekeeper is unavailable, resource creation is blocked.
-# This is the industry standard for production security.
-# ------------------------------------------------------------------------------
-validatingWebhookFailurePolicy: Fail
+  # ------------------------------------------------------------------------------
+  # Webhook failure policy
+  # "Fail" ensures policy enforcement is fail-closed.
+  # If Gatekeeper is unavailable, resource creation is blocked.
+  # This is the industry standard for production security.
+  # ------------------------------------------------------------------------------
+  validatingWebhookFailurePolicy: Fail
 
-# ------------------------------------------------------------------------------
-# Webhook timeout (seconds)
-# Provides a small buffer during API pressure while keeping latency low.
-# ------------------------------------------------------------------------------
-validatingWebhookTimeoutSeconds: 5
+  # ------------------------------------------------------------------------------
+  # Webhook timeout (seconds)
+  # Provides a small buffer during API pressure while keeping latency low.
+  # ------------------------------------------------------------------------------
+  validatingWebhookTimeoutSeconds: 5
 
-# ------------------------------------------------------------------------------
-# Logging level
-# INFO is recommended for production to avoid excessive verbosity.
-# ------------------------------------------------------------------------------
-logLevel: INFO
+  # ------------------------------------------------------------------------------
+  # Logging level
+  # INFO is recommended for production to avoid excessive verbosity.
+  # ------------------------------------------------------------------------------
+  logLevel: INFO
 
-# ------------------------------------------------------------------------------
-# Gatekeeper image configuration
-# Image tag is pinned to avoid unintentional upgrades.
-# ------------------------------------------------------------------------------
-image:
-  repository: openpolicyagent/gatekeeper
-  release: v3.1.1
-  pullPolicy: IfNotPresent
+  # ------------------------------------------------------------------------------
+  # Gatekeeper image configuration
+  # Image tag is pinned to avoid unintentional upgrades.
+  # ------------------------------------------------------------------------------
+  image:
+    repository: openpolicyagent/gatekeeper
+    release: v3.1.1
+    pullPolicy: IfNotPresent
 
-# ------------------------------------------------------------------------------
-# Resource requests and limits
-# Admission webhooks must be responsive; avoid CPU throttling.
-# ------------------------------------------------------------------------------
-resources:
-  requests:
-    cpu: 200m
-    memory: 256Mi
-  limits:
-    cpu: 1
-    memory: 1Gi
+  # ------------------------------------------------------------------------------
+  # Resource requests and limits
+  # Admission webhooks must be responsive; avoid CPU throttling.
+  # ------------------------------------------------------------------------------
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
 
-# ------------------------------------------------------------------------------
-# Node selector
-# Ensures Gatekeeper runs only on supported OS nodes.
-# ------------------------------------------------------------------------------
-# nodeSelector:
-#   kubernetes.io/os: linux
+  # ------------------------------------------------------------------------------
+  # Node selector
+  # Ensures Gatekeeper runs only on supported OS nodes.
+  # ------------------------------------------------------------------------------
+  # nodeSelector:
+  #   kubernetes.io/os: linux
 
-# ------------------------------------------------------------------------------
-# Tolerations
-# Allows Gatekeeper to run on control-plane nodes when needed.
-# Important for small or tightly constrained clusters.
-# ------------------------------------------------------------------------------
-tolerations:
-- key: "node-role.kubernetes.io/control-plane"
-  operator: "Exists"
-  effect: "NoSchedule"
+  # ------------------------------------------------------------------------------
+  # Tolerations
+  # Allows Gatekeeper to run on control-plane nodes when needed.
+  # Important for small or tightly constrained clusters.
+  # ------------------------------------------------------------------------------
+  tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
 
-# ------------------------------------------------------------------------------
-# Custom Resource Definitions (CRDs)
-# Helm will install and manage Gatekeeper CRDs if not already present.
-# ------------------------------------------------------------------------------
-customResourceDefinitions:
-  create: true
+  # ------------------------------------------------------------------------------
+  # Custom Resource Definitions (CRDs)
+  # Helm will install and manage Gatekeeper CRDs if not already present.
+  # ------------------------------------------------------------------------------
+  customResourceDefinitions:
+    create: true
 
-# ------------------------------------------------------------------------------
-# Metrics backend
-# Prometheus is the standard metrics backend in Kubernetes environments.
-# ------------------------------------------------------------------------------
-metricsBackends:
-- prometheus
+  # ------------------------------------------------------------------------------
+  # Metrics backend
+  # Prometheus is the standard metrics backend in Kubernetes environments.
+  # ------------------------------------------------------------------------------
+  metricsBackends:
+  - prometheus
 
-# ------------------------------------------------------------------------------
-# Pod Disruption Budget
-# Ensures at least one Gatekeeper controller remains available during evictions.
-# ------------------------------------------------------------------------------
-pdb:
+  # ------------------------------------------------------------------------------
+  # Pod Disruption Budget
+  # Ensures at least one Gatekeeper controller remains available during evictions.
+  # ------------------------------------------------------------------------------
+  pdb:
+    controllerManager:
+      minAvailable: 1
+
+  # ------------------------------------------------------------------------------
+  # Controller manager priority
+  # system-cluster-critical ensures Gatekeeper is scheduled before workloads.
+  # ------------------------------------------------------------------------------
   controllerManager:
-    minAvailable: 1
-
-# ------------------------------------------------------------------------------
-# Controller manager priority
-# system-cluster-critical ensures Gatekeeper is scheduled before workloads.
-# ------------------------------------------------------------------------------
-controllerManager:
-  priorityClassName: system-cluster-critical
+    priorityClassName: system-cluster-critical
