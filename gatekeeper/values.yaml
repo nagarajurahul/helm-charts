@@ -127,3 +127,11 @@ gatekeeper:
     exemptNamespaces:
     - kube-system
     - gatekeeper-system
+    - calico-system
+    - tigera-operator
+    - metallb-system
+    # - traefik
+    - argocd
+    # - cert-manager
+    # - monitoring
+    # - pgbouncer
