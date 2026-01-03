@@ -123,3 +123,7 @@ gatekeeper:
   # ------------------------------------------------------------------------------
   controllerManager:
     priorityClassName: system-cluster-critical
+    # Prevent system components (CNI, kube-proxy, CoreDNS, etc.) from being blocked
+    exemptNamespaces:
+    - kube-system
+    - gatekeeper-system
