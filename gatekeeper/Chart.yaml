@@ -1,0 +1,14 @@
+apiVersion: v2
+name: gatekeeper
+description: Umbrella chart for gatekeeper
+type: application
+version: 1.0.0
+appVersion: "3.1.1"
+
+dependencies:
+- name: gatekeeper
+  version: 3.1.1
+  repository: https://open-policy-agent.github.io/gatekeeper/charts
+
+# https://github.com/open-policy-agent/gatekeeper/blob/master/charts/gatekeeper/README.md
+# https://artifacthub.io/packages/helm/gatekeeper/gatekeeper/3.1.1
