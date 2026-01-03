@@ -1,0 +1,104 @@
+metrics-server:
+  replicas: 1
+  priorityClassName: system-cluster-critical
+
+  image:
+    repository: registry.k8s.io/metrics-server/metrics-server
+    tag: ""
+    pullPolicy: IfNotPresent
+
+  # ------------------------------------------------------------------------------
+  # API Service (IMPORTANT)
+  # ------------------------------------------------------------------------------
+  apiService:
+    create: true
+    insecureSkipTLSVerify: true
+    caBundle: ""
+    annotations: {}
+
+  # ------------------------------------------------------------------------------
+  # Container arguments
+  # Check this
+  # ------------------------------------------------------------------------------
+  defaultArgs:
+  - --cert-dir=/tmp
+  - --secure-port=10250
+  - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
+  - --kubelet-use-node-status-port
+  - --metric-resolution=15s
+
+  # ONLY enable this if kubelet certs are self-signed
+  # Check this
+  args:
+  - --kubelet-insecure-tls
+
+  # ------------------------------------------------------------------------------
+  # Resources (realistic production sizing)
+  # ------------------------------------------------------------------------------
+  resources:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
+
+  # ------------------------------------------------------------------------------
+  # Security Context (Production Hardened)
+  # ------------------------------------------------------------------------------
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+      - ALL
+
+  # ------------------------------------------------------------------------------
+  # Networking
+  # ------------------------------------------------------------------------------
+  service:
+    type: ClusterIP
+    port: 443
+
+  hostNetwork:
+    enabled: false
+
+  # ------------------------------------------------------------------------------
+  # RBAC
+  # ------------------------------------------------------------------------------
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+
+  # ------------------------------------------------------------------------------
+  # Scheduling Controls
+  # ------------------------------------------------------------------------------
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: metrics-server
+
+  # ------------------------------------------------------------------------------
+  # Observability (optional – off by default)
+  # ------------------------------------------------------------------------------
+  metrics:
+    enabled: false
+
+  serviceMonitor:
+    enabled: false
