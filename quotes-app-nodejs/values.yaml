@@ -129,7 +129,7 @@ autoscaling:
     policyPercent: 50
     policyPods: 4
     periodSeconds: 60
-    selectPolicy: Max
+    selectPolicy: Min
 
 # Additional volumes on the output Deployment definition.
 volumes: []
