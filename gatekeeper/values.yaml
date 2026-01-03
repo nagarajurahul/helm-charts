@@ -61,10 +61,10 @@ gatekeeper:
   # Gatekeeper image configuration
   # Image tag is pinned to avoid unintentional upgrades.
   # ------------------------------------------------------------------------------
-  image:
-    repository: openpolicyagent/gatekeeper
-    release: v3.1.1
-    pullPolicy: IfNotPresent
+  # image:
+  #   repository: openpolicyagent/gatekeeper
+  #   release: v3.21.0
+  #   pullPolicy: IfNotPresent
 
   # ------------------------------------------------------------------------------
   # Resource requests and limits
