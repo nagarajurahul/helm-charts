@@ -132,17 +132,17 @@ autoscaling:
     selectPolicy: Min
 
 # Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+volumes:
+- name: additional-secrets
+  secret:
+    secretName: quotes-app-nodejs-additional-secrets
+    optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+volumeMounts:
+- name: additional-secrets
+  mountPath: "/etc/additional_secrets"
+  readOnly: true
 
 nodeSelector: {}
 
