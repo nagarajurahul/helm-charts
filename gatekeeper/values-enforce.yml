@@ -1,0 +1,7 @@
+gatekeeper:
+  disableValidatingWebhook: false
+  disableMutation: false
+
+  # Enforce (fail-closed)
+  validatingWebhookFailurePolicy: Fail
+  mutatingWebhookFailurePolicy: Fail
