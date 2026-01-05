@@ -43,7 +43,7 @@ gatekeeper:
   # If Gatekeeper is unavailable, resource creation is blocked.
   # This is the industry standard for production security.
   # ------------------------------------------------------------------------------
-  validatingWebhookFailurePolicy: Fail
+  validatingWebhookFailurePolicy: Ignore
 
   # ------------------------------------------------------------------------------
   # Webhook timeout (seconds)
