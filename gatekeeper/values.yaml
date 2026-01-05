@@ -38,20 +38,6 @@ gatekeeper:
   emitAuditEvents: true
 
   # ------------------------------------------------------------------------------
-  # Webhook failure policy
-  # "Fail" ensures policy enforcement is fail-closed.
-  # If Gatekeeper is unavailable, resource creation is blocked.
-  # This is the industry standard for production security.
-  # ------------------------------------------------------------------------------
-  validatingWebhookFailurePolicy: Ignore
-
-  # ------------------------------------------------------------------------------
-  # Webhook timeout (seconds)
-  # Provides a small buffer during API pressure while keeping latency low.
-  # ------------------------------------------------------------------------------
-  validatingWebhookTimeoutSeconds: 5
-
-  # ------------------------------------------------------------------------------
   # Logging level
   # INFO is recommended for production to avoid excessive verbosity.
   # ------------------------------------------------------------------------------
@@ -96,13 +82,6 @@ gatekeeper:
     effect: "NoSchedule"
 
   # ------------------------------------------------------------------------------
-  # Custom Resource Definitions (CRDs)
-  # Helm will install and manage Gatekeeper CRDs if not already present.
-  # ------------------------------------------------------------------------------
-  customResourceDefinitions:
-    create: true
-
-  # ------------------------------------------------------------------------------
   # Metrics backend
   # Prometheus is the standard metrics backend in Kubernetes environments.
   # ------------------------------------------------------------------------------
@@ -116,6 +95,33 @@ gatekeeper:
   pdb:
     controllerManager:
       minAvailable: 1
+
+  # ------------------------------------------------------------------------------
+  # Custom Resource Definitions (CRDs)
+  # Helm will install and manage Gatekeeper CRDs if not already present.
+  # ------------------------------------------------------------------------------
+  customResourceDefinitions:
+    create: true
+
+  # ------------------------------------------------------------------------------
+  # Webhook failure policy
+  # "Fail" ensures policy enforcement is fail-closed.
+  # If Gatekeeper is unavailable, resource creation is blocked.
+  # This is the industry standard for production security.
+  # ------------------------------------------------------------------------------
+  validatingWebhookFailurePolicy: Ignore
+  mutatingWebhookFailurePolicy: Ignore
+
+  # CRITICAL: disable admission during bootstrap
+  disableValidatingWebhook: true
+  disableMutation: true
+
+  # ------------------------------------------------------------------------------
+  # Webhook timeout (seconds)
+  # Provides a small buffer during API pressure while keeping latency low.
+  # ------------------------------------------------------------------------------
+  validatingWebhookTimeoutSeconds: 5
+  mutatingWebhookTimeoutSeconds: 5
 
   # ------------------------------------------------------------------------------
   # Controller manager priority
