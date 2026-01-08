@@ -70,8 +70,8 @@ ingress:
     #   hosts:
     #     - ci-cd-app.homeserver.com
 
-# certificate:
-#   enabled: true
+certificate:
+  enabled: false
 #   name: ci-cd-app-tls
 #   secretName: ci-cd-app-tls
 #   issuerRef:
