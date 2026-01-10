@@ -1,7 +1,11 @@
 gatekeeper:
   disableValidatingWebhook: false
-  disableMutation: false
+
+  # Mutation webhook is not generally used in produciton, unless advanced cases are needed
+  # disableMutation: false
 
   # Enforce (fail-closed)
   validatingWebhookFailurePolicy: Fail
-  mutatingWebhookFailurePolicy: Fail
+
+  # Commenting as we are not using mutating webhook
+  # mutatingWebhookFailurePolicy: Fail
