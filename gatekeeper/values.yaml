@@ -11,7 +11,8 @@ gatekeeper:
   # Audit runs periodically to detect policy violations in existing resources.
   # A 5-minute interval balances freshness with API server load.
   # ------------------------------------------------------------------------------
-  auditInterval: 300
+  auditInterval: 60 
+  # 300 in production
 
   # ------------------------------------------------------------------------------
   # Use cached inventory for audits instead of hitting the API server repeatedly.
