@@ -1,0 +1,5 @@
+gatekeeper:
+  validatingWebhookFailurePolicy: Ignore
+
+  # Commenting as we are not using mutating webhook
+  # mutatingWebhookFailurePolicy: Ignore
