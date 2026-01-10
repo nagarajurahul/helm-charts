@@ -125,6 +125,8 @@ gatekeeper:
   validatingWebhookTimeoutSeconds: 5
   mutatingWebhookTimeoutSeconds: 5
 
+  enableK8sNativeValidation: true
+
   # ------------------------------------------------------------------------------
   # Controller manager priority
   # system-cluster-critical ensures Gatekeeper is scheduled before workloads.
