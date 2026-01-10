@@ -112,9 +112,8 @@ gatekeeper:
   validatingWebhookFailurePolicy: Ignore
   mutatingWebhookFailurePolicy: Ignore
 
-  # CRITICAL: disable admission during bootstrap
-  disableValidatingWebhook: true
-  disableMutation: true
+  disableValidatingWebhook: false
+  disableMutation: false
 
   # ------------------------------------------------------------------------------
   # Webhook timeout (seconds)
