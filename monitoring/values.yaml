@@ -21,6 +21,12 @@ kube-prometheus-stack:
   prometheus:
     enabled: true
     prometheusSpec:
+    
+      thanos:
+        objectStorageConfig:
+          name: thanos-objstore
+          key: objstore.yml
+
       # For HA, use >1
       replicas: 1
       # Balance: Cost vs. query performance
@@ -81,11 +87,6 @@ kube-prometheus-stack:
       #   - secretName: prometheus-tls
       #     hosts:
       #       - prometheus.homelab.local
-
-    thanos:
-      objectStorageConfig:
-        name: thanos-objstore
-        key: objstore.yml
 
   # Grafana
   grafana:
