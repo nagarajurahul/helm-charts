@@ -2,7 +2,7 @@ apiVersion: v2
 name: monitoring
 description: Umbrella chart for kube-prometheus-stack
 type: application
-version: 1.0.0
+version: 1.1.0
 appVersion: "80.4.1"
 
 dependencies:

@@ -82,7 +82,12 @@ kube-prometheus-stack:
       #     hosts:
       #       - prometheus.homelab.local
 
-      # Grafana
+      thanos:
+        objectStorageConfig:
+          name: thanos-objstore
+          key: objstore.yml
+
+  # Grafana
   grafana:
     enabled: true
 
@@ -141,6 +146,11 @@ kube-prometheus-stack:
         url: http://loki.monitoring.svc.cluster.local:3100
         access: proxy
         isDefault: false
+      - name: Thanos
+        type: prometheus
+        url: http://thanos-query.monitoring.svc.cluster.local:9090
+        access: proxy
+        isDefault: true
     # Plugins
     plugins:
       - grafana-piechart-panel
