@@ -151,7 +151,7 @@ kube-prometheus-stack:
         isDefault: false
       - name: Thanos
         type: prometheus
-        url: http://thanos-query.monitoring.svc.cluster.local:9090
+        url: http://thanos-query.monitoring.svc.cluster.local:9090/
         access: proxy
         isDefault: true
     # Plugins
