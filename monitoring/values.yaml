@@ -90,6 +90,9 @@ kube-prometheus-stack:
   # Grafana
   grafana:
     enabled: true
+    sidecar:
+      datasources:
+        defaultDatasourceEnabled: false
 
     # Use existing secret for admin credentials
     # Check this in production, deploy using Vault
