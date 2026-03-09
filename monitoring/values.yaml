@@ -82,10 +82,10 @@ kube-prometheus-stack:
       #     hosts:
       #       - prometheus.homelab.local
 
-      thanos:
-        objectStorageConfig:
-          name: thanos-objstore
-          key: objstore.yml
+    thanos:
+      objectStorageConfig:
+        name: thanos-objstore
+        key: objstore.yml
 
   # Grafana
   grafana:
