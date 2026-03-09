@@ -24,8 +24,9 @@ kube-prometheus-stack:
     
       thanos:
         objectStorageConfig:
-          name: thanos-objstore
-          key: objstore.yml
+          existingSecret:
+            name: thanos-objstore
+            key: objstore.yml
 
       # For HA, use >1
       replicas: 1
